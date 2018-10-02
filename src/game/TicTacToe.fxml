@@ -17,7 +17,7 @@
     <Button onAction="#clickTile" styleClass="gameTile, hidden" GridPane.columnIndex="0" GridPane.rowIndex="5" />
     <Button onAction="#clickTile" styleClass="gameTile, hidden" GridPane.columnIndex="1" GridPane.rowIndex="5" />
     <Button onAction="#clickTile" styleClass="gameTile, hidden" GridPane.columnIndex="2" GridPane.rowIndex="5" />
-    <Label fx:id="testLabel" GridPane.columnSpan="3" GridPane.rowIndex="10" />
+    <Label fx:id="playerLabel" GridPane.columnSpan="3" GridPane.rowIndex="10" />
    <columnConstraints>
       <ColumnConstraints />
       <ColumnConstraints />
