@@ -1,20 +1,39 @@
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.layout.GridPane?>
+<?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<GridPane fx:controller="game.Controller"
-          xmlns:fx="http://javafx.com/fxml"
-          stylesheets="/game/tictactoe.css"
-          alignment="center" hgap="10" vgap="10">
-    <Button GridPane.columnIndex="0" GridPane.rowIndex="3" onAction="#clickTile" />
-    <Button GridPane.columnIndex="1" GridPane.rowIndex="3" onAction="#clickTile" />
-    <Button GridPane.columnIndex="2" GridPane.rowIndex="3" onAction="#clickTile" />
-    <Button GridPane.columnIndex="0" GridPane.rowIndex="4" onAction="#clickTile" />
-    <Button GridPane.columnIndex="1" GridPane.rowIndex="4" onAction="#clickTile" />
-    <Button GridPane.columnIndex="2" GridPane.rowIndex="4" onAction="#clickTile" />
-    <Button GridPane.columnIndex="0" GridPane.rowIndex="5" onAction="#clickTile" />
-    <Button GridPane.columnIndex="1" GridPane.rowIndex="5" onAction="#clickTile" />
-    <Button GridPane.columnIndex="2" GridPane.rowIndex="5" onAction="#clickTile" />
-    <Label GridPane.rowIndex="10" GridPane.columnSpan="3" fx:id="testLabel" />
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane fx:id="gameGrid" alignment="center" hgap="10" stylesheets="/game/tictactoe.css" vgap="10" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.121" fx:controller="game.Controller">
+    <Button fx:id="startGameButton" onAction="#startGame" text="Start Game" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="0" />
+    <Button onAction="#clickTile" styleClass="gameTile, hidden" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+    <Button onAction="#clickTile" styleClass="gameTile, hidden" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+    <Button onAction="#clickTile" styleClass="gameTile, hidden" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+    <Button onAction="#clickTile" styleClass="gameTile, hidden" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+    <Button onAction="#clickTile" styleClass="gameTile, hidden" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+    <Button onAction="#clickTile" styleClass="gameTile, hidden" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+    <Button onAction="#clickTile" styleClass="gameTile, hidden" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+    <Button onAction="#clickTile" styleClass="gameTile, hidden" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+    <Button onAction="#clickTile" styleClass="gameTile, hidden" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+    <Label fx:id="testLabel" GridPane.columnSpan="3" GridPane.rowIndex="10" />
+   <columnConstraints>
+      <ColumnConstraints />
+      <ColumnConstraints />
+      <ColumnConstraints />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+   </rowConstraints>
 </GridPane>

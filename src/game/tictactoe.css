@@ -6,9 +6,13 @@
     -fx-font-size: 20;
 }
 
-.button {
+.gameTile {
     -fx-min-width: 50;
     -fx-max-width: 50;
     -fx-min-height: 50;
     -fx-max-height: 50;
+}
+
+.hidden {
+    visibility: hidden;
 }
