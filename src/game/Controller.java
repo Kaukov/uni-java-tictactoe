@@ -36,9 +36,11 @@ public class Controller {
                     isGameOver = true;
 
                     setPlayerLabel("Player " + newButtonText + " wins!");
-                }
-                else if (checkForDraw()) setPlayerLabel("DRAW");
-                else {
+                } else if (checkForDraw()) {
+                    isGameOver = true;
+
+                    setPlayerLabel("DRAW");
+                } else {
                     isXNext = !isXNext;
 
                     setPlayerLabel();
@@ -52,8 +54,6 @@ public class Controller {
     }
 
     private boolean checkForWin(char playerSymbol) {
-        System.out.println("Checking if one of the players has won...");
-
         boolean topRowCondition =
             filledTiles[0][0] == playerSymbol &&
             filledTiles[0][1] == playerSymbol &&
@@ -96,9 +96,13 @@ public class Controller {
     }
 
     private boolean checkForDraw() {
-        System.out.println("Checking for draw...");
+        for (char[] row: filledTiles) {
+            for (char symbol: row) {
+                if (symbol == 0) return false;
+            }
+        }
 
-        return false;
+        return true;
     }
 
     public void startGame() {
