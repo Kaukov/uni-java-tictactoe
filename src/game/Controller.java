@@ -13,30 +13,36 @@ public class Controller {
     public Button startGameButton;
 
     private boolean isXNext = true;
-    private char[][] filledTiles = new char[3][3];    // TRUE == filled tile
+    private boolean isGameOver = false;
+    private char[][] filledTiles = new char[3][3];
 
     private static final String CLASS_HIDDEN = "hidden";
     private static final int START_ROW = 3;
 
     public void clickTile(ActionEvent actionEvent) {
-        Button clickedButton = (Button) actionEvent.getSource();
-        int clickedButtonRow = GridPane.getRowIndex(clickedButton) - START_ROW;
-        int clickedButtonColumn = GridPane.getColumnIndex(clickedButton);
+        if (!isGameOver) {
+            Button clickedButton = (Button) actionEvent.getSource();
+            int clickedButtonRow = GridPane.getRowIndex(clickedButton) - START_ROW;
+            int clickedButtonColumn = GridPane.getColumnIndex(clickedButton);
 
-        if (clickedButton.getText().isEmpty()) {
-            clickedButton.setText(isXNext ? "X" : "O");
+            if (clickedButton.getText().isEmpty()) {
+                clickedButton.setText(isXNext ? "X" : "O");
 
-            char newButtonText = clickedButton.getText().toCharArray()[0];
+                char newButtonText = clickedButton.getText().toCharArray()[0];
 
-            fillTile(clickedButtonRow, clickedButtonColumn, newButtonText);
+                fillTile(clickedButtonRow, clickedButtonColumn, newButtonText);
 
-            if (checkForWin()) {
-                System.out.println("Congratulations, Player " + newButtonText);
-            } else {
+                if (checkForWin(newButtonText)) {
+                    isGameOver = true;
 
-                isXNext = !isXNext;
+                    setPlayerLabel("Player " + newButtonText + " wins!");
+                }
+                else if (checkForDraw()) setPlayerLabel("DRAW");
+                else {
+                    isXNext = !isXNext;
 
-                setPlayerLabel();
+                    setPlayerLabel();
+                }
             }
         }
     }
@@ -45,8 +51,52 @@ public class Controller {
         filledTiles[x][y] = symbol;
     }
 
-    private boolean checkForWin() {
+    private boolean checkForWin(char playerSymbol) {
         System.out.println("Checking if one of the players has won...");
+
+        boolean topRowCondition =
+            filledTiles[0][0] == playerSymbol &&
+            filledTiles[0][1] == playerSymbol &&
+            filledTiles[0][2] == playerSymbol
+        ;
+
+        boolean middleRowCondition =
+            filledTiles[1][0] == playerSymbol &&
+            filledTiles[1][1] == playerSymbol &&
+            filledTiles[1][2] == playerSymbol
+        ;
+
+        boolean bottomRowCondition =
+            filledTiles[2][0] == playerSymbol &&
+            filledTiles[2][1] == playerSymbol &&
+            filledTiles[2][2] == playerSymbol
+        ;
+
+        boolean leftDiagonalCondition =
+            filledTiles[0][0] == playerSymbol &&
+            filledTiles[1][1] == playerSymbol &&
+            filledTiles[2][2] == playerSymbol
+        ;
+
+        boolean rightDiagonalCondition =
+            filledTiles[0][2] == playerSymbol &&
+            filledTiles[1][1] == playerSymbol &&
+            filledTiles[2][0] == playerSymbol
+        ;
+
+
+        return
+            topRowCondition ||
+            middleRowCondition ||
+            bottomRowCondition ||
+            leftDiagonalCondition ||
+            rightDiagonalCondition
+        ;
+
+    }
+
+    private boolean checkForDraw() {
+        System.out.println("Checking for draw...");
 
         return false;
     }
@@ -74,5 +124,9 @@ public class Controller {
 
     private void setPlayerLabel() {
         playerLabel.setText("Player " + (isXNext ? "X" : "O") + "'s turn");
+    }
+
+    private void setPlayerLabel(String text) {
+        playerLabel.setText(text);
     }
 }
