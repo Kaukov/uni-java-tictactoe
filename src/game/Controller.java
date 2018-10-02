@@ -5,6 +5,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Controller {
@@ -22,7 +23,6 @@ public class Controller {
             clickedButton.setText(isXNext ? "X" : "O");
             isXNext = !isXNext;
         }
-        testLabel.setText("Tile clicked");
     }
 
     private void initTiles() {
@@ -33,10 +33,22 @@ public class Controller {
     }
 
     public void startGame() {
-        Button[] gameTiles = new Button[9];
+        ArrayList<Button> gameTiles = new ArrayList<Button>();
         Object[] boardTiles = gameGrid.getChildren().toArray();
 
         startGameButton.setVisible(false);
+
+        // Get all game tiles
+        for (Object tile: boardTiles) {
+            if (tile.getClass().getSimpleName().matches("Button")) {
+                gameTiles.add((Button) tile);
+            }
+        }
+
+        // Unhide game tiles
+        for (Button gameTile: gameTiles) {
+            gameTile.getStyleClass().remove(CLASS_HIDDEN);
+        }
 
         initTiles();
     }
