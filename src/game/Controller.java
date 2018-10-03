@@ -11,10 +11,14 @@ public class Controller {
     public GridPane gameGrid;
     public Button startGameButton;
     public Button newGameButton;
+    public Label playerXScore;
+    public Label playerOScore;
 
     private boolean isXNext = true;
     private boolean isGameOver = false;
     private char[][] filledTiles = new char[3][3];
+    private int xScore = 0;
+    private int oScore = 0;
 
     private static final String CLASS_HIDDEN = "hidden";
     private static final int START_ROW = 3;
@@ -128,6 +132,10 @@ public class Controller {
         Object[] boardTiles = gameGrid.getChildren().toArray();
 
         startGameButton.getStyleClass().add(CLASS_HIDDEN);
+        playerOScore.getStyleClass().remove(CLASS_HIDDEN);
+        playerXScore.getStyleClass().remove(CLASS_HIDDEN);
+        playerOScore.setText(playerOScore.getText() + oScore);
+        playerXScore.setText(playerXScore.getText() + xScore);
 
         setPlayerLabel();
 
@@ -142,18 +150,8 @@ public class Controller {
         }
     }
 
-    public void resetGame() {
-        isXNext = true;
-        isGameOver = false;
-
-        newGameButton.getStyleClass().add(CLASS_HIDDEN);
-    }
-
-    public void restartGame(ActionEvent actionEvent) {
+    private void resetBoard() {
         Object[] boardTiles = gameGrid.getChildren().toArray();
-
-        isXNext = true;
-        isGameOver = false;
 
         // Clear filled tiles array
         for (char[] tileRow: filledTiles) {
@@ -170,16 +168,42 @@ public class Controller {
             }
         }
 
-        newGameButton.getStyleClass().add(CLASS_HIDDEN);
+        playerLabel.setText("");
+    }
+
+    public void restartGame(ActionEvent actionEvent) {
+        isXNext = true;
+        isGameOver = false;
+
+        resetBoard();
+
+        ((Button) actionEvent.getSource()).getStyleClass().add(CLASS_HIDDEN);
     }
 
     private void endGame(String labelText) {
+        if (!checkForDraw()) {
+            if (isXNext) { xScore++; }
+            else { oScore++; }
+
+            setPlayerScoreLabels();
+        }
+
         isGameOver = true;
+
         setPlayerLabel(labelText);
+
         newGameButton.getStyleClass().remove(CLASS_HIDDEN);
     }
 
     private void setPlayerLabel() { playerLabel.setText("Player " + (isXNext ? "X" : "O") + "'s turn"); }
 
     private void setPlayerLabel(String text) { playerLabel.setText(text); }
+
+    private void setPlayerScoreLabels() {
+        String playerXScoreTrimmed = playerXScore.getText().split(":")[0].trim();
+        String playerOScoreTrimmed = playerOScore.getText().split(":")[0].trim();
+
+        playerXScore.setText(playerXScoreTrimmed + ": " + xScore);
+        playerOScore.setText(playerOScoreTrimmed + ": " + oScore);
+    }
 }
