@@ -3,14 +3,19 @@
 }
 
 .label {
-    -fx-font-size: 20;
+    -fx-font-size: 40;
+    -fx-alignment: center;
 }
 
 .gameTile {
-    -fx-min-width: 50;
-    -fx-max-width: 50;
-    -fx-min-height: 50;
-    -fx-max-height: 50;
+    -fx-min-width: 100;
+    -fx-max-width: 100;
+    -fx-min-height: 100;
+    -fx-max-height: 100;
+    display: block;
+    -fx-border-style: none;
+    -fx-background-color: #000000;
+    -fx-text-fill: #ffffff;
 }
 
 .hidden {

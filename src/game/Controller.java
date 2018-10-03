@@ -1,16 +1,16 @@
 package game;
 
+import java.util.Arrays;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
-import java.util.ArrayList;
-
 public class Controller {
     public Label playerLabel;
     public GridPane gameGrid;
     public Button startGameButton;
+    public Button newGameButton;
 
     private boolean isXNext = true;
     private boolean isGameOver = false;
@@ -32,15 +32,9 @@ public class Controller {
 
                 fillTile(clickedButtonRow, clickedButtonColumn, newButtonText);
 
-                if (checkForWin(newButtonText)) {
-                    isGameOver = true;
-
-                    setPlayerLabel("Player " + newButtonText + " wins!");
-                } else if (checkForDraw()) {
-                    isGameOver = true;
-
-                    setPlayerLabel("DRAW");
-                } else {
+                if (checkForWin(newButtonText)) { endGame("Player " + newButtonText + " wins!"); }
+                else if (checkForDraw()) { endGame("DRAW"); }
+                else {
                     isXNext = !isXNext;
 
                     setPlayerLabel();
@@ -72,6 +66,24 @@ public class Controller {
             filledTiles[2][2] == playerSymbol
         ;
 
+        boolean leftColumnCondition =
+            filledTiles[0][0] == playerSymbol &&
+            filledTiles[1][0] == playerSymbol &&
+            filledTiles[2][0] == playerSymbol
+        ;
+
+        boolean middleColumnCondition =
+            filledTiles[0][1] == playerSymbol &&
+            filledTiles[1][1] == playerSymbol &&
+            filledTiles[2][1] == playerSymbol
+        ;
+
+        boolean rightColumnCondition =
+            filledTiles[0][2] == playerSymbol &&
+            filledTiles[1][2] == playerSymbol &&
+            filledTiles[2][2] == playerSymbol
+        ;
+
         boolean leftDiagonalCondition =
             filledTiles[0][0] == playerSymbol &&
             filledTiles[1][1] == playerSymbol &&
@@ -89,6 +101,9 @@ public class Controller {
             topRowCondition ||
             middleRowCondition ||
             bottomRowCondition ||
+            leftColumnCondition ||
+            middleColumnCondition ||
+            rightColumnCondition ||
             leftDiagonalCondition ||
             rightDiagonalCondition
         ;
@@ -105,32 +120,66 @@ public class Controller {
         return true;
     }
 
+    private boolean isButton(Object object) {
+        return object.getClass().getSimpleName().matches("Button");
+    }
+
     public void startGame() {
-        ArrayList<Button> gameTiles = new ArrayList<Button>();
         Object[] boardTiles = gameGrid.getChildren().toArray();
 
-        startGameButton.setVisible(false);
+        startGameButton.getStyleClass().add(CLASS_HIDDEN);
 
         setPlayerLabel();
 
-        // Get all game tiles
+        // Get all game tiles and unhide them
         for (Object tile: boardTiles) {
-            if (tile.getClass().getSimpleName().matches("Button")) {
-                gameTiles.add((Button) tile);
+            if (isButton(tile)) {
+                Button gameTile = (Button) tile;
+                boolean isGameTile = gameTile.getStyleClass().contains("gameTile");
+
+                if (isGameTile) { gameTile.getStyleClass().remove(CLASS_HIDDEN); }
+            }
+        }
+    }
+
+    public void resetGame() {
+        isXNext = true;
+        isGameOver = false;
+
+        newGameButton.getStyleClass().add(CLASS_HIDDEN);
+    }
+
+    public void restartGame(ActionEvent actionEvent) {
+        Object[] boardTiles = gameGrid.getChildren().toArray();
+
+        isXNext = true;
+        isGameOver = false;
+
+        // Clear filled tiles array
+        for (char[] tileRow: filledTiles) {
+            Arrays.fill(tileRow, Character.MIN_VALUE);
+        }
+
+        // Clear filled tiles
+        for (Object tile: boardTiles) {
+            if (isButton(tile)) {
+                Button gameTile = (Button) tile;
+                boolean isGameTile = gameTile.getStyleClass().contains("gameTile");
+
+                if (isGameTile) { gameTile.setText(""); }
             }
         }
 
-        // Unhide game tiles
-        for (Button gameTile: gameTiles) {
-            gameTile.getStyleClass().remove(CLASS_HIDDEN);
-        }
+        newGameButton.getStyleClass().add(CLASS_HIDDEN);
     }
 
-    private void setPlayerLabel() {
-        playerLabel.setText("Player " + (isXNext ? "X" : "O") + "'s turn");
+    private void endGame(String labelText) {
+        isGameOver = true;
+        setPlayerLabel(labelText);
+        newGameButton.getStyleClass().remove(CLASS_HIDDEN);
     }
 
-    private void setPlayerLabel(String text) {
-        playerLabel.setText(text);
-    }
+    private void setPlayerLabel() { playerLabel.setText("Player " + (isXNext ? "X" : "O") + "'s turn"); }
+
+    private void setPlayerLabel(String text) { playerLabel.setText(text); }
 }
