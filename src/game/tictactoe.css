@@ -16,6 +16,8 @@
     -fx-border-style: none;
     -fx-background-color: #000000;
     -fx-text-fill: #ffffff;
+    -fx-font-size: 40;
+    -fx-font-weight: bold;
 }
 
 .hidden {
